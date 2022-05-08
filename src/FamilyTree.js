@@ -20,7 +20,7 @@ export class FamilyTree {
     }
 
     getMothersWithoutRoot = () => {
-        const females = Object  .values(this.familyMembers).filter((familyMember) => familyMember.gender === GENDER.FEMALE)
+        const females = Object.values(this.familyMembers).filter((familyMember) => familyMember.gender === GENDER.FEMALE);
         return females.filter((female) => female.children.length > 0 && !female.isRoot);
     }
 

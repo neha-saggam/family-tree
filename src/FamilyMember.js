@@ -93,6 +93,9 @@ export class FamilyMember {
 
     getPaternalUncles = () => {
         const father = this._father;
+        if(!father._mother) {
+            return undefined;
+        }
         const grandMother = father._mother;
         const unclesAndAunties = grandMother._children;
         return unclesAndAunties
@@ -102,6 +105,9 @@ export class FamilyMember {
 
     getPaternalAunties = () => {
         const father = this._father;
+        if(!father._mother) {
+            return undefined;
+        }
         const grandMother = father._mother;
         const unclesAndAunties = grandMother._children;
         return unclesAndAunties
@@ -111,6 +117,9 @@ export class FamilyMember {
 
     getMaternalUncles = () => {
         const mother = this._mother;
+        if(!mother._mother) {
+            return undefined;
+        }
         const grandMother = mother._mother;
         const unclesAndAunties = grandMother._children;
         return unclesAndAunties
@@ -120,6 +129,9 @@ export class FamilyMember {
 
     getMaternalAunties = () => {
         const mother = this._mother;
+        if(!mother._mother) {
+            return undefined;
+        }
         const grandMother = mother._mother;
         const unclesAndAunties = grandMother._children;
         return unclesAndAunties
