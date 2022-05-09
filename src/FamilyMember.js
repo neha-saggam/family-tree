@@ -128,6 +128,9 @@ export class FamilyMember {
     }
 
     getMaternalAunties = () => {
+        if(!this._mother) {
+            return undefined;
+        }
         const mother = this._mother;
         if(!mother._mother) {
             return undefined;
