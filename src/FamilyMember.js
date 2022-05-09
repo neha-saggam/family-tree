@@ -140,46 +140,79 @@ export class FamilyMember {
     }
 
     getSons = () => {
+        if(!this._children) {
+            return undefined;
+        }
         const children = this._children;
         return children.filter((child) => child.gender !== GENDER.FEMALE);
     }
 
     getDaughters = () => {
+        if(!this._children) {
+            return undefined;
+        }
         const children = this._children;
         return children.filter((child) => child.gender !== GENDER.MALE);
     }
 
     getBrothers = () => {
+        if(!this._father) {
+            return undefined;
+        }
         const father = this._father;
         return father.children.filter((child) => child.gender !== GENDER.FEMALE && child.name !== this._name);
     }
 
     getBrotherInLaws = () => {
+        if(!this._spouse) {
+            return undefined;
+        }
         const spouse = this._spouse;
+        if(!spouse.father) {
+            return undefined;
+        }
         const fatherInLaw = spouse.father;
         return fatherInLaw.children.filter((child) => child.gender !== GENDER.FEMALE && child.name !== this._name);
     }
 
     getSisters = () => {
+        if(!this._mother) {
+            return undefined;
+        }
         const mother = this._mother;
         return mother.children.filter((child) => child.gender !== GENDER.MALE && child.name !== this._name);
     }
 
     getSisterInLaws = () => {
+        if(!this._spouse) {
+            return undefined;
+        }
         const spouse = this._spouse;
+        if(!spouse.father) {
+            return undefined;
+        }
         const fatherInLaw = spouse.father;
         return fatherInLaw.children.filter((child) => child.gender !== GENDER.MALE && child.name !== this._name);
     }
 
     getGrandDaughters = () => {
+        if(!this._children) {
+            return undefined;
+        }
         const children = this._children;
         const grandChildren = children.flatMap((child) => child._children);
         return grandChildren.filter((child) => child.gender !== GENDER.MALE);
     }
 
     getCousins = () => { //Children of parent sibling
+        if(!this._father) {
+            return undefined;
+        }
         const father = this._father;
-        const grandMother = father._mother;
+        if(!father.mother) {
+            return undefined;
+        }
+        const grandMother = father.mother;
         const unclesAndAunties = grandMother.children.filter((child) => child._name !== father._name);
         const cousins = unclesAndAunties.flatMap((uncleOrAunty) => uncleOrAunty.children);
         return cousins;
