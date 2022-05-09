@@ -15,6 +15,10 @@ export class FamilyTree {
         return this.familyMembers[name];
     }
 
+    setFamilyMembers(familyMembers) {
+        return this.familyMembers = familyMembers;
+    }
+
     addChildToFamilyMember(familyMember, childName) {
         this.familyMembers[familyMember.name].addChild(this.familyMembers[childName]);
     }

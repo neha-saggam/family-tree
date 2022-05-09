@@ -22,6 +22,8 @@ const RELATIONS = {
     GrandDaughter: "Grand daughter",
 };
 
+const initialFamilyTree = new FamilyTree();
+
 function App() {
 
     const [familyRelative, setFamilyRelative] = useState("");
@@ -30,7 +32,8 @@ function App() {
     const [mother, setMother] = useState("");
     const [childName, setChildName] = useState("");
     const [gender, setGender] = useState("");
-    const [familyTree, setFamilyTree] = useState(new FamilyTree());
+    const [familyTree, setFamilyTree] = useState(initialFamilyTree);
+    const [error, setError] = useState('');
     const [motherWithMaxGirlChildren, setMotherWithMaxGirlChildren] = useState("");
 
     const getRelative = () => {
@@ -43,10 +46,16 @@ function App() {
     }
 
     const addChild = () => {
+        if(!childName || !gender || !mother) {
+            setError(`Please enter all the fields`);
+            return;
+        }
+        setError('');
         familyTree.addMember({ name: childName, gender });
         const familyMember = familyTree.getFamilyMember(mother);
         familyTree.addChildToFamilyMember(familyMember, childName);
         setFamilyTree(familyTree);
+        familyTree.setFamilyMembers(familyTree.familyMembers);
     }
 
     const getMotherWithMostGirls = () => {
@@ -60,7 +69,12 @@ function App() {
           <h3>Meet the Family</h3>
           <Grid container spacing={1} justifyContent="center">
               <Grid item xs={2}>
-                  <TextField label="Family Member Name" variant="outlined" value={familyRelative} onChange={(e) => setFamilyRelative(e.target.value)} />
+                  <TextField
+                      required
+                      label="Family Member Name"
+                      variant="outlined"
+                      value={familyRelative}
+                      onChange={(e) => setFamilyRelative(e.target.value)} />
               </Grid>
               <Grid item xs={2}>
                   <FormControl fullWidth>
@@ -91,6 +105,7 @@ function App() {
                       label="Mother"
                       variant="outlined"
                       value={mother}
+                      required
                       onChange={(e) => setMother(e.target.value)} />
               </Grid>
               <Grid item xs={2}>
@@ -98,6 +113,7 @@ function App() {
                       label="Child"
                       variant="outlined"
                       value={childName}
+                      required
                       onChange={(e) => setChildName(e.target.value)} />
               </Grid>
               <Grid item xs={2}>
@@ -107,12 +123,15 @@ function App() {
                           value={gender}
                           label="Gender"
                           onChange={(event) => setGender(event.target.value)}
+                          required
                       >
                           {Object.values(GENDER).map((gender) => <MenuItem value={gender}>{gender}</MenuItem>)}
                       </Select>
                   </FormControl>
               </Grid>
           </Grid>
+          <p style={{ color: 'red' }}>{error}</p>
+
           <Grid mt={4}>
               <Grid item xs={8}>
                   <Button onClick={addChild} variant="contained">Add Child</Button>
